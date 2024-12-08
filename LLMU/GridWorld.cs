@@ -11,12 +11,15 @@ namespace LLMU
         public int[,] Grid { get; set; }
         public (int x, int y) AgentPosition { get; set; }
         public (int x, int y) GoalPosition { get; set; }
+        public (int x, int y) Obstacle { get; set; }
 
         public GridWorld(int rows, int cols)
         {
+            Random rnd = new Random();
             Grid = new int[rows, cols];
             AgentPosition = (0, 0);
             GoalPosition = (rows - 1, cols - 1);
+            Obstacle = (1, 1);
         }
 
         public (int, double) TakeAction(string action)
@@ -32,12 +35,27 @@ namespace LLMU
             }
 
             if (newPosition.x >= 0 && newPosition.x < Grid.GetLength(0) &&
-                newPosition.y >= 0 && newPosition.y < Grid.GetLength(1))
+                newPosition.y >= 0 && newPosition.y < Grid.GetLength(1) &&
+                newPosition != Obstacle)
             {
                 AgentPosition = newPosition;
             }
 
-            double reward = AgentPosition == GoalPosition ? 10 : -0.1;
+            double reward = 0;
+
+            if (AgentPosition == GoalPosition)
+            {
+                reward = 10;
+            }
+            else if (newPosition == Obstacle)
+            {
+                reward = -0.1;
+            }
+            else
+            {
+                reward = -0.1;
+            }
+
 
             int state = AgentPosition.x * Grid.GetLength(1) + AgentPosition.y;
 
@@ -54,6 +72,8 @@ namespace LLMU
                         Console.Write("A ");
                     else if (GoalPosition.x == i && GoalPosition.y == j)
                         Console.Write("G ");
+                    else if (Obstacle.x == i && Obstacle.y == j)
+                        Console.Write("| ");
                     else
                         Console.Write(". ");
                 }

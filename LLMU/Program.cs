@@ -1,6 +1,6 @@
 ﻿using LLMU;
 
-GridWorld env = new GridWorld(3, 3);
+GridWorld env = new GridWorld(4, 4);
 QLearningAgent agent = new QLearningAgent();
 
 int numEpisodes = 1000;
@@ -21,7 +21,7 @@ for (int episode = 0; episode < numEpisodes; episode++)
         agent.UpdateQValue(state, action, reward, nextState, alpha, gamma);
         state = nextState;
 
-        System.Threading.Thread.Sleep(500);
+        System.Threading.Thread.Sleep(100);
     }
 
     Console.WriteLine("Goal Reached!");
