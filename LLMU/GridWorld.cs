@@ -50,15 +50,19 @@ namespace LLMU
 
                 if (AgentPosition == GoalPosition)
                 {
-                    reward = 10;
+                    reward = 100;
                 }
                 else if(previousPosition == newPosition)
                 {
-                    reward -= 1;
+                    reward = -10;
+                }
+                else if((previousDistance - currentDistance) > 0)
+                {
+                    reward += 1;
                 }
                 else
                 {
-                    reward += (previousDistance - currentDistance);
+                    reward = -10;
                 }
             }
 

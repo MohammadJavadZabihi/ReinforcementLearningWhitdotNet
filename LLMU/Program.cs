@@ -1,10 +1,11 @@
 ﻿using LLMU;
+using System.Diagnostics;
 
 GridWorld env = new GridWorld(4, 4);
 QLearningAgent agent = new QLearningAgent();
 
-int numEpisodes = 20;
-double alpha = 0.1, gamma = 0.9, epsilon = 0.1;
+int numEpisodes = 1000;
+double alpha = 0.3, gamma = 0.9, epsilon = 0.2;
 
 for (int episode = 0; episode < numEpisodes; episode++)
 {
@@ -32,7 +33,7 @@ for (int episode = 0; episode < numEpisodes; episode++)
 
 
 GridWorld gridWorld = new GridWorld(6, 6);
-double epsilon2 = 0.1;
+double epsilon2 = 0.2;
 
 for (int episode = 0; episode < numEpisodes; episode++)
 {
@@ -60,7 +61,7 @@ for (int episode = 0; episode < numEpisodes; episode++)
 }
 
 GridWorld gridWorld2 = new GridWorld(8, 8);
-double epsilon3 = 0.1;
+double epsilon3 = 0.2;
 
 for (int episode = 0; episode < numEpisodes; episode++)
 {
@@ -90,7 +91,11 @@ for (int episode = 0; episode < numEpisodes; episode++)
 GridWorld gridWorld3 = new GridWorld(5, 5);
 double epsilon4 = 0.1;
 
-for (int episode = 0; episode < numEpisodes; episode++)
+Stopwatch stopwatch = new Stopwatch();
+
+stopwatch.Start();
+
+for (int episode = 0; episode < 1; episode++)
 {
     Console.WriteLine($"Episode {episode + 1}");
 
@@ -101,12 +106,12 @@ for (int episode = 0; episode < numEpisodes; episode++)
     {
         gridWorld3.PrintGrid();
 
-        string action = agent.ChooseAction(state, 0);
+        string action = agent.ChooseAction(state, 0.01);
         var (nextState, reward) = gridWorld3.TakeAction(action);
         agent.UpdateQValue(state, action, reward, nextState, alpha, gamma);
         state = nextState;
 
-        System.Threading.Thread.Sleep(100);
+        System.Threading.Thread.Sleep(200);
     }
 
     epsilon4 = Math.Max(0.01, epsilon4 * 0.99);
@@ -114,3 +119,7 @@ for (int episode = 0; episode < numEpisodes; episode++)
     Console.WriteLine("Global 2 Reached");
     Console.WriteLine();
 }
+
+stopwatch.Stop();
+
+Console.WriteLine($"Time Of Ex for : {stopwatch.ElapsedMilliseconds}");
